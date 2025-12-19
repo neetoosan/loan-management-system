@@ -201,16 +201,20 @@ def SettingsScreen(page: ft.Page):
     )
     
     # Main content
-    content = ft.Column(
-        controls=[
-            ft.Text("Settings", size=24, weight="bold", color=ft.Colors.BLUE_200),
-            ft.Text("Manage your application and data", size=12, color=ft.Colors.GREY),
-            ft.Container(height=20),
-            data_management_card,
-            app_info_card,
-        ],
-        spacing=20,
+    content = ft.Container(
+        content=ft.Column(
+            controls=[
+                ft.Text("Settings", size=24, weight="bold", color=ft.Colors.BLUE_200),
+                ft.Text("Manage your application and data", size=12, color=ft.Colors.GREY),
+                ft.Container(height=20),
+                data_management_card,
+                app_info_card,
+            ],
+            spacing=20,
+            expand=True,
+        ),
         padding=20,
+        bgcolor="#1a1a1a",
         expand=True,
     )
     
@@ -218,11 +222,7 @@ def SettingsScreen(page: ft.Page):
         "/settings",
         controls=[
             create_app_bar("Settings", page),
-            ft.Container(
-                content=content,
-                expand=True,
-                bgcolor="#1a1a1a",
-            ),
+            content,
         ],
     )
 

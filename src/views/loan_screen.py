@@ -194,20 +194,24 @@ def LoanScreen(page: ft.Page):
     )
     
     # Main content
-    content = ft.Column(
-        controls=[
-            ft.Text("Loan Management", size=24, weight="bold", color=ft.Colors.BLUE_200),
-            top_row,
-            ft.Container(
-                content=loans_table,
-                bgcolor="#2a2a2a",
-                border_radius=10,
-                padding=10,
-                expand=True,
-            ),
-        ],
-        spacing=20,
+    content = ft.Container(
+        content=ft.Column(
+            controls=[
+                ft.Text("Loan Management", size=24, weight="bold", color=ft.Colors.BLUE_200),
+                top_row,
+                ft.Container(
+                    content=loans_table,
+                    bgcolor="#2a2a2a",
+                    border_radius=10,
+                    padding=10,
+                    expand=True,
+                ),
+            ],
+            spacing=20,
+            expand=True,
+        ),
         padding=20,
+        bgcolor="#1a1a1a",
         expand=True,
     )
     
@@ -218,11 +222,7 @@ def LoanScreen(page: ft.Page):
         "/loans",
         controls=[
             create_app_bar("Loans Management", page),
-            ft.Container(
-                content=content,
-                bgcolor="#1a1a1a",
-                expand=True,
-            ),
+            content,
         ],
     )
 

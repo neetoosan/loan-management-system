@@ -18,17 +18,19 @@ def create_summary_card(title: str, value: str, icon: str, color: str = ft.Color
     return ft.Container(
         content=ft.Column(
             controls=[
-                ft.Icon(name=icon, size=40, color=color),
+                ft.Icon(name=icon, size=36, color=color),
+                ft.Container(height=8),
                 ft.Text(value, size=28, weight="bold", color=ft.Colors.WHITE),
-                ft.Text(title, size=12, color=ft.Colors.GREY),
+                ft.Text(title, size=12, color=ft.Colors.GREY, weight="w400"),
             ],
-            alignment=ft.MainAxisAlignment.CENTER,
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            spacing=0,
+            alignment=ft.MainAxisAlignment.START,
         ),
-        bgcolor="#1a1a1a",
-        border_radius=10,
-        padding=20,
-        shadow=ft.BoxShadow(blur_radius=5, color=ft.Colors.BLACK),
+        bgcolor="#252525",
+        border_radius=12,
+        padding=18,
+        shadow=ft.BoxShadow(blur_radius=8, color=ft.Colors.BLACK, spread_radius=0),
+        expand=True,
     )
 
 
@@ -110,64 +112,98 @@ def MainWindow(page: ft.Page):
     
     # State for sidebar visibility
     sidebar_visible = {"value": False}
+    sidebar_wrapper_ref = {"wrapper": None}
+    backdrop_ref = {"backdrop": None}
     
     # Create sidebar navigation
     def create_nav_item(label: str, icon: str, route: str):
         def on_click(e):
             sidebar_visible["value"] = False
-            sidebar.visible = False
+            if sidebar_wrapper_ref["wrapper"]:
+                sidebar_wrapper_ref["wrapper"].visible = False
+            if backdrop_ref["backdrop"]:
+                backdrop_ref["backdrop"].visible = False
             page.go(route)
             page.update()
         
         return ft.Container(
             content=ft.Row(
                 controls=[
-                    ft.Icon(icon, size=24, color=ft.Colors.BLUE_200),
-                    ft.Text(label, size=16, color=ft.Colors.WHITE, weight="bold"),
+                    ft.Icon(icon, size=20, color=ft.Colors.BLUE_200),
+                    ft.Text(label, size=13, color=ft.Colors.WHITE, weight="w500"),
                 ],
-                spacing=15,
+                spacing=16,
+                alignment=ft.MainAxisAlignment.START,
             ),
-            padding=15,
+            padding=ft.padding.symmetric(vertical=14, horizontal=20),
             on_click=on_click,
+            bgcolor="transparent",
         )
     
     sidebar = ft.Container(
         content=ft.Column(
             controls=[
+                # Header section with branding
                 ft.Container(
-                    content=ft.Row(
+                    content=ft.Column(
                         controls=[
-                            ft.Text("Menu", size=20, weight="bold", color=ft.Colors.BLUE_200),
-                            ft.IconButton(
-                                ft.Icons.CLOSE,
-                                icon_size=24,
-                                on_click=lambda e: (
-                                    sidebar_visible.update({"value": False}),
-                                    setattr(sidebar, "visible", False),
-                                    page.update()
-                                ),
-                            ),
+                            ft.Text("MORNING STAR", size=18, weight="bold", color=ft.Colors.BLUE_200),
+                            ft.Text("Cooperative", size=11, color=ft.Colors.GREY, weight="w400"),
                         ],
-                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        spacing=3,
                     ),
-                    padding=15,
+                    padding=ft.padding.symmetric(horizontal=24, vertical=24),
+                    border_radius=12,
                 ),
-                ft.Divider(height=1),
-                create_nav_item("Dashboard", ft.Icons.DASHBOARD, "/dashboard"),
-                create_nav_item("Members", ft.Icons.PEOPLE, "/members"),
-                create_nav_item("Loans", ft.Icons.ATTACH_MONEY, "/loans"),
-                create_nav_item("Contributions", ft.Icons.SAVINGS, "/contributions"),
-                create_nav_item("Settings", ft.Icons.SETTINGS, "/settings"),
-                ft.Divider(height=1),
-                create_nav_item("Logout", ft.Icons.LOGOUT, "/login"),
+                ft.Container(height=5),
+                # Navigation section
+                ft.Container(
+                    content=ft.Column(
+                        controls=[
+                            ft.Text("NAVIGATION", size=11, weight="bold", color=ft.Colors.GREY),
+                            ft.Container(height=3),
+                            create_nav_item("Dashboard", ft.Icons.DASHBOARD, "/dashboard"),
+                            create_nav_item("Members", ft.Icons.PEOPLE, "/members"),
+                            create_nav_item("Loans", ft.Icons.ATTACH_MONEY, "/loans"),
+                            create_nav_item("Contributions", ft.Icons.SAVINGS, "/contributions"),
+                        ],
+                        spacing=2,
+                    ),
+                    padding=ft.padding.symmetric(horizontal=16, vertical=12),
+                ),
+                ft.Container(height=8),
+                # Settings section
+                ft.Container(
+                    content=ft.Column(
+                        controls=[
+                            ft.Text("SETTINGS", size=11, weight="bold", color=ft.Colors.GREY),
+                            ft.Container(height=3),
+                            create_nav_item("Settings", ft.Icons.SETTINGS, "/settings"),
+                        ],
+                        spacing=2,
+                    ),
+                    padding=ft.padding.symmetric(horizontal=16, vertical=12),
+                ),
+                ft.Container(expand=True),
+                # Logout section
+                ft.Container(
+                    content=ft.Column(
+                        controls=[
+                            ft.Divider(height=1),
+                            ft.Container(height=5),
+                            create_nav_item("Logout", ft.Icons.LOGOUT, "/login"),
+                        ],
+                        spacing=0,
+                    ),
+                ),
             ],
             spacing=0,
             scroll=ft.ScrollMode.AUTO,
         ),
-        width=250,
-        bgcolor="#2a2a2a",
-        visible=False,
-        expand_loose=True,
+        width=280,
+        bgcolor="#1e1e1e",
+        border_radius=20,
+        expand=True,
     )
     
     # Summary statistics
@@ -204,9 +240,9 @@ def MainWindow(page: ft.Page):
                 color=ft.Colors.RED_400,
             ),
         ],
-        wrap=True,
-        spacing=20,
-        run_spacing=20,
+        spacing=12,
+        run_spacing=12,
+        wrap=False,
     )
     
     # Contribution Trend Line Chart
@@ -266,28 +302,32 @@ def MainWindow(page: ft.Page):
             ft.Container(
                 content=ft.Column(
                     controls=[
-                        ft.Text("Contribution Trend (Last 12 Months)", weight="bold", color=ft.Colors.WHITE),
+                        ft.Text("Contribution Trend (Last 12 Months)", size=17, weight="bold", color=ft.Colors.WHITE),
+                        ft.Container(height=15),
                         bar_chart,
-                    ]
+                    ],
+                    spacing=0,
                 ),
-                expand=1,
-                border_radius=10,
-                padding=20,
-                bgcolor="#2a2a2a",
-                shadow=ft.BoxShadow(blur_radius=5, color=ft.Colors.BLACK),
+                expand=2,
+                border_radius=15,
+                padding=30,
+                bgcolor="#252525",
+                shadow=ft.BoxShadow(blur_radius=10, color=ft.Colors.BLACK, spread_radius=1),
             ),
             ft.Container(
                 content=ft.Column(
                     controls=[
-                        ft.Text("Contributions by Member", weight="bold", color=ft.Colors.WHITE),
+                        ft.Text("Contributions by Member", size=17, weight="bold", color=ft.Colors.WHITE),
+                        ft.Container(height=15),
                         pie_chart,
-                    ]
+                    ],
+                    spacing=0,
                 ),
                 expand=1,
-                border_radius=10,
-                padding=20,
-                bgcolor="#2a2a2a",
-                shadow=ft.BoxShadow(blur_radius=5, color=ft.Colors.BLACK),
+                border_radius=15,
+                padding=30,
+                bgcolor="#252525",
+                shadow=ft.BoxShadow(blur_radius=10, color=ft.Colors.BLACK, spread_radius=1),
             ),
         ],
         expand=True,
@@ -322,33 +362,98 @@ def MainWindow(page: ft.Page):
     recent_activities_container = ft.Container(
         content=ft.Column(
             controls=[
-                ft.Text("Recent Activities", size=16, weight="bold", color=ft.Colors.WHITE),
+                ft.Text("Recent Activities", size=17, weight="bold", color=ft.Colors.WHITE),
+                ft.Container(height=15),
                 recent_activities_table,
             ],
-            spacing=10,
+            spacing=0,
         ),
-        padding=20,
-        border_radius=10,
-        bgcolor="#2a2a2a",
-        shadow=ft.BoxShadow(blur_radius=5, color=ft.Colors.BLACK),
+        padding=30,
+        border_radius=15,
+        bgcolor="#252525",
+        shadow=ft.BoxShadow(blur_radius=10, color=ft.Colors.BLACK, spread_radius=1),
     )
     
     # Main content
     dashboard_content = ft.Container(
         content=ft.Column(
             controls=[
-                ft.Text("Dashboard", size=24, weight="bold", color=ft.Colors.BLUE_200),
-                summary_row,
+                ft.Container(
+                    content=ft.Column(
+                        controls=[
+                            ft.Text("Dashboard", size=32, weight="bold", color=ft.Colors.BLUE_200),
+                            ft.Text("Welcome to Morning Star Cooperative Management System", size=13, color=ft.Colors.GREY),
+                        ],
+                        spacing=5,
+                    ),
+                ),
+                ft.Container(height=20),
+                # Top section: Summary cards (left) and Recent Activities (right)
+                # Top section: Summary cards (left) and Recent Activities (right)
+                ft.Container(
+                    content=ft.Row(
+                        controls=[
+                            ft.Container(
+                                content=summary_row,
+                                expand=2,
+                                height=150,
+                            ),
+                            ft.Container(width=15),
+                            ft.Container(
+                                content=recent_activities_container,
+                                expand=1,
+                                height=150,
+                            ),
+                        ],
+                        spacing=0,
+                        expand=True,
+                    ),
+                    height=150,
+                ),
+                ft.Container(height=25),
+                # Bottom section: Charts
                 charts_row,
-                recent_activities_container,
             ],
-            spacing=20,
+            spacing=0,
             expand=True,
         ),
-        padding=20,
+        padding=40,
         bgcolor="#1a1a1a",
         expand=True,
     )
+    
+    # Create backdrop
+    backdrop = ft.Container(
+        visible=False,
+        bgcolor="rgba(0,0,0,0.5)",
+        expand=True,
+    )
+    
+    # Create sidebar wrapper
+    sidebar_wrapper = ft.Container(
+        content=sidebar,
+        visible=False,
+    )
+    
+    # Store references for nav items to use
+    sidebar_wrapper_ref["wrapper"] = sidebar_wrapper
+    backdrop_ref["backdrop"] = backdrop
+    
+    # Update menu button click handler
+    def toggle_sidebar(e):
+        sidebar_visible["value"] = not sidebar_visible["value"]
+        sidebar_wrapper.visible = sidebar_visible["value"]
+        backdrop.visible = sidebar_visible["value"]
+        page.update()
+    
+    # Close sidebar when backdrop clicked
+    def close_sidebar(e):
+        sidebar_visible["value"] = False
+        sidebar_wrapper.visible = False
+        backdrop.visible = False
+        page.update()
+    
+    backdrop.on_click = close_sidebar
     
     return ft.View(
         "/dashboard",
@@ -358,11 +463,7 @@ def MainWindow(page: ft.Page):
                 bgcolor=ft.Colors.BLUE_900,
                 leading=ft.IconButton(
                     ft.Icons.MENU,
-                    on_click=lambda e: (
-                        sidebar_visible.update({"value": not sidebar_visible["value"]}),
-                        setattr(sidebar, "visible", sidebar_visible["value"]),
-                        page.update()
-                    ),
+                    on_click=toggle_sidebar,
                 ),
                 actions=[
                     ft.IconButton(
@@ -372,12 +473,12 @@ def MainWindow(page: ft.Page):
                     )
                 ],
             ),
-            ft.Row(
+            ft.Stack(
                 controls=[
-                    sidebar,
                     dashboard_content,
+                    backdrop,
+                    sidebar_wrapper,
                 ],
-                spacing=0,
                 expand=True,
             ),
         ],

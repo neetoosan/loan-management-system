@@ -149,20 +149,24 @@ def ContributionScreen(page: ft.Page):
     )
     
     # Main content
-    content = ft.Column(
-        controls=[
-            ft.Text("Contribution Management", size=24, weight="bold", color=ft.Colors.BLUE_200),
-            top_row,
-            ft.Container(
-                content=contributions_table,
-                bgcolor="#2a2a2a",
-                border_radius=10,
-                padding=10,
-                expand=True,
-            ),
-        ],
-        spacing=20,
+    content = ft.Container(
+        content=ft.Column(
+            controls=[
+                ft.Text("Contribution Management", size=24, weight="bold", color=ft.Colors.BLUE_200),
+                top_row,
+                ft.Container(
+                    content=contributions_table,
+                    bgcolor="#2a2a2a",
+                    border_radius=10,
+                    padding=10,
+                    expand=True,
+                ),
+            ],
+            spacing=20,
+            expand=True,
+        ),
         padding=20,
+        bgcolor="#1a1a1a",
         expand=True,
     )
     
@@ -172,11 +176,7 @@ def ContributionScreen(page: ft.Page):
         "/contributions",
         controls=[
             create_app_bar("Contribution Management", page),
-            ft.Container(
-                content=content,
-                bgcolor="#1a1a1a",
-                expand=True,
-            ),
+            content,
         ],
     )
 
