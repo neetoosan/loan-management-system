@@ -1,0 +1,29 @@
+    def run_task(
+        self,
+        handler: Callable[InputT, Awaitable[RetT]],
+        *args: InputT.args,
+        **kwargs: InputT.kwargs,
+    ) -> Future[RetT]:
+        """
+        Run `handler` coroutine as a new Task in the event loop associated with the
+        current page.
+        """
+        _context_page.set(self)
+        if not asyncio.iscoroutinefunction(handler):
+            raise TypeError("handler must be a coroutine function")
+
+        future = asyncio.run_coroutine_threadsafe(
+            handler(*args, **kwargs), self.session.connection.loop
+        )
+
+        def _on_completion(f):
+            try:
+                exception = f.exception()
+                if exception:
+                    raise exception
+            except CancelledError:
+                pass
+
+        future.add_done_callback(_on_completion)
+
+        return future

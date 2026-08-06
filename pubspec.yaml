@@ -1,0 +1,19 @@
+name: Morning Star Loan & Contribution Manager
+description: Loan & Contribution Manager Application built with Flet
+publish_to: none
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.1.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

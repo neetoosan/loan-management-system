@@ -1,0 +1,40 @@
+[project]
+name = "Morning Star Cooperative"
+version = "1.5.0"
+description = "Loan & Contribution Manager Application"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "neetoosan", email = "tobimolla44@example.com" }
+]
+dependencies = [
+  "flet>=0.80.1",
+  "sqlalchemy>=2.0.0",
+  "python-dateutil>=2.8.0",
+  "reportlab>=4.0.0",
+  "openpyxl>=3.10.0",
+  "anyio>=4.0.0",
+  "httpx>=0.24.0",
+]
+
+[dependency-groups]
+dev = [
+  "flet[all]>=0.80.1",
+]
+
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flet]
+org = "com.lmsmanager"
+module = "app"
+product = ""
+company = "Flet"
+copyright = "Copyright (C) 2026 by Flet"
+
+[tool.flet.app]
+path = "app"
+
+[tool.flet.build.windows]
+# Windows build configuration for Python bundling

@@ -1,0 +1,20 @@
+loan_manager_app/
+├── assets/                  # Icons, splash screens, and images
+├── src/
+│   ├── main.py              # Entry point & Routing logic
+│   ├── database/            # SQLAlchemy models and connection
+│   │   ├── __init__.py
+│   │   ├── connection.py    # Engine and Session setup
+│   │   └── models.py        # Loan, Member, and Contribution tables
+│   ├── components/          # Reusable UI parts (Navbar, Sidebar)
+│   │   ├── __init__.py
+│   │   └── navigation.py
+│   └── views/               # Screen definitions
+│       ├── __init__.py
+│       ├── login_screen.py
+│       ├── member_dialogs.py # add_member_dialog
+│       ├── loan_screens.py   # loan_table_screen, add_loan_dialog, loan_details
+│       ├── contribution_screens.py # contribution_table_screen, add_contribution_dialog
+│       └── settings_screen.py
+├── pyproject.toml           # Flet packaging configuration
+└── requirements.txt         # Dependencies (flet, sqlalchemy, psycopg2)

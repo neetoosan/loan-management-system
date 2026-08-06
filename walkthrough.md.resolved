@@ -1,0 +1,25 @@
+# Loading Screen Integration — Walkthrough
+
+## Changes Made
+
+### 1. [svg.html](file:///c:/Users/HP/Documents/flet_projects/LMS-PYTHON-FLET/app/components/svg.html) — Updated
+- Replaced gold/cyan coin animation with **blue spinner** matching project theme
+- Colors: `#1a1a1a` background, `#42A5F5` / `#90CAF9` / `#0D47A1` blue accents
+- Text changed to `Loading...` + `MORNING STAR COOPERATIVE` subtitle
+- Clean spinning ring, orbiting dot, floating particles
+
+### 2. [loading_screen.py](file:///c:/Users/HP/Documents/flet_projects/LMS-PYTHON-FLET/app/components/loading_screen.py) — New
+- [create_loading_view(route)](file:///c:/Users/HP/Documents/flet_projects/LMS-PYTHON-FLET/app/components/loading_screen.py#9-111) returns an `ft.View` with:
+  - Dual-ring `ProgressRing` spinner (native Flet — works reliably)
+  - Star icon in center
+  - "MORNING STAR COOPERATIVE" branding + "Loading..." text
+  - `#1a1a1a` dark background, blue 200/400 accents
+
+### 3. [main.py](file:///c:/Users/HP/Documents/flet_projects/LMS-PYTHON-FLET/app/main.py) — Modified
+- **Loading screen shown** before building every route except `/login`
+- Uses `page.run_task()` with `asyncio.sleep(0.3)` so the loading UI renders before the heavy view constructor runs
+- Refactored route logic into [_build_view()](file:///c:/Users/HP/Documents/flet_projects/LMS-PYTHON-FLET/app/main.py#21-45) helper for cleaner code
+
+## Verification
+- ✅ Syntax check passed for [main.py](file:///c:/Users/HP/Documents/flet_projects/LMS-PYTHON-FLET/app/main.py) and [loading_screen.py](file:///c:/Users/HP/Documents/flet_projects/LMS-PYTHON-FLET/app/components/loading_screen.py)
+- ⏳ Manual testing needed — run the app and navigate between screens
